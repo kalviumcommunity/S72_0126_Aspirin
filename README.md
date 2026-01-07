@@ -31,21 +31,35 @@ Easier to implement and maintain for a college project
 
 ❌ Why Static or Hybrid Rendering Was Not Used
 
-Static Rendering
-Not suitable because train delay data changes frequently and would become outdated.
+# 🌍 Multi-Environment Setup
 
-Hybrid Rendering
-Adds unnecessary complexity (caching, revalidation) which is not required for a small academic project.
+This project is configured to run in three separate environments, each with its own configuration and behavior.
 
-🏗️ How Dynamic Rendering Is Applied
+Environments Used
+Environment	Purpose
+Development	Local development and testing
+Staging	Pre-production testing
+Production	Live deployed application
 
-Dashboard data is fetched on every request
+# 📁 Environment Configuration Files
 
-Delay reports are always fresh and accurate
+Each environment uses its own .env file:
 
-Firebase real-time updates are used where needed
+.env.development
+.env.staging
+.env.production
 
-No aggressive caching or revalidation logic
+.gitignore to block .env files
+
+✅ Verification
+
+Verified that staging and production builds connect to different APIs
+
+Confirmed secrets are loaded via environment variables
+
+Checked Git history to ensure no secrets were committed
+
+Tested builds locally and after deployment
 
 🚀 Benefits for This Project
 
