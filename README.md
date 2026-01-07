@@ -71,6 +71,62 @@ Tested builds locally and after deployment
 
 🎓 Ideal for academic evaluation
 
+🐳 Docker: Containerizing the Application
+
+To ensure consistency across environments, the application was containerized using Docker.
+
+A Docker image packages the app, runtime, and dependencies
+
+A container is a running instance of that image
+
+Docker eliminates “works on my machine” issues
+
+Implementation:
+
+Separate Dockerfiles for frontend and backend
+
+Environment variables passed at runtime
+
+Docker Compose used for local multi-service setup
+
+🔁 CI/CD: Automating Build & Deployment
+
+To automate the workflow, GitHub Actions was used to build and deploy the project.
+
+CI/CD Flow
+
+Code pushed to GitHub
+
+GitHub Actions triggers the pipeline
+
+App is built and tested
+
+Docker image is created
+
+Image is deployed to the cloud
+
+☁️ Cloud Deployment (AWS / Azure)
+
+The containerized application was deployed to the cloud using managed services.
+
+Backend hosted on AWS EC2 / Azure App Service
+
+Frontend served via cloud hosting
+
+Secrets managed using GitHub Secrets
+
+🔐 Environment Variables & Secrets
+
+To keep the deployment secure:
+
+No secrets are committed to GitHub
+
+.env files are ignored
+
+API keys and credentials stored in GitHub Secrets
+
+Accessed using process.env
+
 🛠️ Tech Stack
 
 Frontend: Next.js (App Router)
