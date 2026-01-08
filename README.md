@@ -139,3 +139,78 @@ Real-Time & Auth: Firebase
 
 Deployment: Vercel (Frontend)
 
+
+📁 Project Folder Structure
+root
+├── frontend
+│   └── src
+│       ├── app
+│       ├── components
+│       └── lib
+└── backend
+
+📌 Purpose of Each Folder
+frontend/
+
+Contains the Next.js (TypeScript) frontend application.
+
+src/app/
+
+Uses Next.js App Router
+
+Contains route-based pages, layouts, and server components
+
+Handles routing and page-level logic
+
+src/components/
+
+Reusable UI components (Navbar, Cards, Forms, Modals)
+
+Purely presentational or lightly stateful components
+
+src/lib/
+
+Shared utilities and helpers
+
+API clients, configuration files, constants, and reusable logic
+
+backend/
+
+Contains backend-specific logic and services (to be expanded).
+
+Will handle:
+
+APIs / services
+
+Database access
+
+Business logic
+
+Authentication, caching, integrations
+
+🏷️ Naming Conventions
+
+Folders: kebab-case or camelCase (consistent across project)
+
+Components: PascalCase
+Example: UserCard.tsx
+
+Utilities & helpers: camelCase
+Example: fetchUser.ts
+
+Routes (Next.js): Follow App Router conventions
+Example: /dashboard, /profile
+
+🚀 Scalability & Clarity Benefits
+
+Clear separation of concerns between frontend and backend
+
+Modular frontend structure makes components reusable and easy to maintain
+
+App Router-based routing supports scalable page and layout management
+
+lib folder centralizes shared logic, reducing duplication
+
+Structure is cloud-ready and CI/CD friendly, making future AWS/Azure deployment easier
+
+<img width="1447" height="1122" alt="Screenshot 2026-01-08 134747" src="https://github.com/user-attachments/assets/eb066400-f653-44a8-8962-d81c035c862c" />
