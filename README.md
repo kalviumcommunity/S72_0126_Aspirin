@@ -201,6 +201,43 @@ Example: fetchUser.ts
 Routes (Next.js): Follow App Router conventions
 Example: /dashboard, /profile
 
+## Docker Setup
+
+### Dockerfile Explanation
+
+- Uses Node.js 20 Alpine image for lightweight builds
+- Installs dependencies inside the container
+- Builds the Next.js application
+- Exposes port 3000 and starts the production server
+
+### Docker Compose Services
+
+- **app**
+  - Runs the Next.js application
+  - Exposes port 3000
+  - Uses environment variables for database and Redis
+
+- **db**
+  - PostgreSQL 15 database container
+  - Uses a named volume for data persistence
+
+- **redis**
+  - Redis 7 in-memory cache
+
+### Networking
+
+All services run in a shared bridge network (`localnet`) allowing container-to-container communication.
+
+### Volumes
+
+- `db_data` persists PostgreSQL data across container restarts.
+
+### How to Run
+
+```bash
+docker-compose up --build
+
+
 🚀 Scalability & Clarity Benefits
 
 Clear separation of concerns between frontend and backend
