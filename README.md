@@ -41,25 +41,65 @@ Development	Local development and testing
 Staging	Pre-production testing
 Production	Live deployed application
 
-# 📁 Environment Configuration Files
+## 📁 Environment Configuration Files
 
-Each environment uses its own .env file:
+Each environment uses its own `.env` file. For local development you should:
 
-.env.development
-.env.staging
-.env.production
+- Create a `.env.local` file in the project root (not committed)
+- Keep a `.env.example` file in the project root (committed) as the template
 
-.gitignore to block .env files
+The `.gitignore` is configured as:
 
-✅ Verification
+- `.env*` — ignore all env files by default  
+- `!.env.example` — but always keep the example template in Git
 
-Verified that staging and production builds connect to different APIs
+This ensures your real secrets never leave your machine while still documenting what is required to run the app.
 
-Confirmed secrets are loaded via environment variables
+## 🔐 Environment Variables & Secrets
 
-Checked Git history to ensure no secrets were committed
+Use the following variables in your env files:
 
-Tested builds locally and after deployment
+- **Server-side only (never exposed to the browser):**
+  - `DATABASE_URL` – connection URL for your primary database (e.g. PostgreSQL / MongoDB)
+  - `BACKEND_API_BASE_URL` – base URL for your backend service (used on the server or API routes)
+  - `FIREBASE_ADMIN_PROJECT_ID`, `FIREBASE_ADMIN_CLIENT_EMAIL`, `FIREBASE_ADMIN_PRIVATE_KEY` – Firebase Admin SDK credentials
+
+- **Client-safe (exposed to the browser – must start with `NEXT_PUBLIC_`):**
+  - `NEXT_PUBLIC_API_BASE_URL` – base URL for API requests from the Next.js frontend
+  - `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID` – public Firebase config used by the client SDK
+  - `NEXT_PUBLIC_APP_ENV` – optional flag (`development` | `staging` | `production`) for client-side behavior toggles
+
+### ✅ Safe Usage in Next.js
+
+- **Server-side access (safe for secrets):**
+  - Example: `const dbUrl = process.env.DATABASE_URL;`  
+  - Use only in server components, API routes, backend services, and any Node.js-only code.
+
+- **Client-side access (must be `NEXT_PUBLIC_`):**
+  - Example: `const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;`  
+  - Only variables prefixed with `NEXT_PUBLIC_` are available in client components/hooks.
+
+To avoid leaking secrets:
+
+- Do **not** read `DATABASE_URL` or other non-`NEXT_PUBLIC_` variables in client components or hooks.
+- Keep all sensitive logic (DB queries, privileged API calls, secret tokens) inside server code.
+- When in doubt, treat anything without `NEXT_PUBLIC_` as secret and server-only.
+
+### 🧩 How to Set Up Locally
+
+1. Copy the template:  
+   - `cp .env.example .env.local`
+2. Replace all placeholder values in `.env.local` with your real credentials.
+3. Restart the Next.js dev server so that changes to env vars are picked up.
+
+### 🧠 Common Pitfalls Avoided
+
+- **Accidentally exposing secrets:**  
+  - Only `NEXT_PUBLIC_*` vars are exposed to the browser; everything else stays on the server.
+- **Committing secrets:**  
+  - `.env.local` is ignored by Git via `.env*`, and only `.env.example` is tracked.
+- **Runtime vs build-time issues:**  
+  - For Next.js, add or change env vars **before** building/deploying. If you change env vars in production, you often need to trigger a rebuild/redeploy so they take effect.
 
 🚀 Benefits for This Project
 
@@ -115,17 +155,11 @@ Frontend served via cloud hosting
 
 Secrets managed using GitHub Secrets
 
-🔐 Environment Variables & Secrets
+These rules also apply to CI/CD and cloud deployment:
 
-To keep the deployment secure:
-
-No secrets are committed to GitHub
-
-.env files are ignored
-
-API keys and credentials stored in GitHub Secrets
-
-Accessed using process.env
+- No secrets are committed to GitHub; use environment-level config or GitHub Secrets.
+- `.env`-style files used in CI are never added to the repo.
+- All secrets are accessed via `process.env` in server-side code only.
 
 🛠️ Tech Stack
 
