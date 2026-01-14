@@ -311,3 +311,18 @@ Seed data is inserted using `prisma/seed.ts`:
 
 - Adds initial users
 - Uses `skipDuplicates` to ensure idempotency
+
+## API Routes & REST Design
+
+### API Route Hierarchy
+
+- GET /api/users
+- POST /api/users
+- GET /api/users/:id
+- DELETE /api/users/:id
+
+### HTTP Verbs & Actions
+
+- GET – Fetch resources
+- POST – Create new resources
+- DELETE – Remove resources
