@@ -285,3 +285,29 @@ lib folder centralizes shared logic, reducing duplication
 Structure is cloud-ready and CI/CD friendly, making future AWS/Azure deployment easier
 
 <img width="1447" height="1122" alt="Screenshot 2026-01-08 134747" src="https://github.com/user-attachments/assets/eb066400-f653-44a8-8962-d81c035c862c" />
+
+
+### Migration Workflow
+
+- `npx prisma migrate dev --name <migration_name>`
+  - Creates migration files
+  - Applies schema changes to the database
+  - Updates Prisma Client
+
+- `npx prisma migrate reset`
+  - Resets the database
+  - Re-applies all migrations
+  - Re-runs seed data (development only)
+
+### Rollback Strategy
+
+- Rollbacks are handled by resetting the database in development
+- Production migrations are tested in staging before deployment
+- Database backups are taken before applying production migrations
+
+### Seed Script
+
+Seed data is inserted using `prisma/seed.ts`:
+
+- Adds initial users
+- Uses `skipDuplicates` to ensure idempotency
