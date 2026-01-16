@@ -1,27 +1,21 @@
-import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { sendSuccess, sendError } from "@/lib/responseHandler";
 
 export async function GET(
-  req: Request,
+  _: Request,
   { params }: { params: { id: string } }
 ) {
-  const userId = Number(params.id);
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(params.id) },
+    });
 
-  if (isNaN(userId)) {
-    return NextResponse.json(
-      { error: "Invalid user ID" },
-      { status: 400 }
-    );
+    if (!user) {
+      return sendError("User not found", "NOT_FOUND", 404);
+    }
+
+    return sendSuccess(user, "User fetched successfully");
+  } catch (error) {
+    return sendError("Error fetching user", "INTERNAL_ERROR", 500, error);
   }
-
-  return NextResponse.json({
-    id: userId,
-    name: "Sample User",
-  });
-}
-
-export async function DELETE() {
-  return NextResponse.json(
-    { message: "User deleted" },
-    { status: 200 }
-  );
 }
