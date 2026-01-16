@@ -326,3 +326,15 @@ Seed data is inserted using `prisma/seed.ts`:
 - GET – Fetch resources
 - POST – Create new resources
 - DELETE – Remove resources
+
+Global Response Handler
+
+A shared utility (lib/responseHandler.ts) is used across all API routes to enforce this standard format for both success and error responses.
+
+This ensures:
+
+Consistent API behavior
+
+Easier frontend error handling
+
+Better logging and observability
