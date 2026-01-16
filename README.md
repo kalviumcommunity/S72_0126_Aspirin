@@ -338,3 +338,16 @@ Consistent API behavior
 Easier frontend error handling
 
 Better logging and observability
+
+
+nput Validation with Zod
+
+All API inputs are validated using Zod to ensure data correctness and prevent invalid requests from reaching business logic or the database.
+
+Validation schemas are defined in lib/schemas/
+
+API routes validate request bodies before processing
+
+Invalid inputs return structured, readable error messages
+
+Schemas are reusable on both client and server
