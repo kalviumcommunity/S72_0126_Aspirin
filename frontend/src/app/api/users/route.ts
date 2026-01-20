@@ -1,68 +1,30 @@
 import { NextResponse } from "next/server";
-import { handleError } from "@/lib/errorHandler";
-
-const users = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" }
-];
-
-
+import { prisma } from "@/lib/prisma";
+import redis from "@/lib/redis";
 
 export async function GET() {
   try {
-    // Simulating an error
-    throw new Error("Database connection failed!");
-  } catch (error) {
-    return handleError(error, "GET /api/users");
-  }
-  const { searchParams } = new URL(req.url);
-  const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
+    const cacheKey = "users:list";
 
-  return NextResponse.json({
-    page,
-    limit,
-    data: users,
-  });
-}
-
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-
-    if (!body.name) {
-      return NextResponse.json(
-        { error: "Name is required" },
-        { status: 400 }
-      );
+    // 1. Check cache
+    const cachedUsers = await redis.get(cacheKey);
+    if (cachedUsers) {
+      console.log("Cache Hit");
+      return NextResponse.json(JSON.parse(cachedUsers));
     }
 
+    // 2. Cache miss → fetch from DB
+    console.log("Cache Miss - Fetching from DB");
+    const users = await prisma.user.findMany();
+
+    // 3. Store in cache (TTL = 60s)
+    await redis.set(cacheKey, JSON.stringify(users), "EX", 60);
+
+    return NextResponse.json(users);
+  } catch (error) {
     return NextResponse.json(
-      { message: "User created", data: body },
-      { status: 201 }
+      { success: false, message: "Failed to fetch users" },
+      { status: 500 }
     );
-  } catch {
-    return NextResponse.json(
-      { error: "Invalid request body" },
-      { status: 400 }
-    );
-  }
-}
-
-const JWT_SECRET = process.env.JWT_SECRET!;
-
-export async function GET(req: Request) {
-  const authHeader = req.headers.get("authorization");
-  const token = authHeader?.split(" ")[1];
-
-  if (!token) {
-    return NextResponse.json({ success: false, message: "Token missing" }, { status: 401 });
-  }
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return NextResponse.json({ success: true, message: "Protected data", user: decoded });
-  } catch {
-    return NextResponse.json({ success: false, message: "Invalid or expired token" }, { status: 403 });
   }
 }
