@@ -380,3 +380,20 @@ This project implements centralized error handling to ensure consistent, secure,
 - `app/api/*` → API routes using the error handler
 
 This approach improves debugging, security, and scalability.
+
+
+## Redis Caching Implementation
+
+This project uses Redis to cache frequently accessed API data, reducing database load and improving response time.
+
+### Features
+- Redis integration using ioredis
+- Cache-aside (lazy loading) pattern
+- TTL-based automatic cache expiry
+- Cache invalidation on data updates
+
+### Folder Structure
+- `lib/redis.ts` → Redis connection utility
+- `app/api/users` → Cached API routes
+
+Caching significantly improves performance and scalability under high traffic.
