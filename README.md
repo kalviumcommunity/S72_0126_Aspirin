@@ -362,3 +362,21 @@ This project implements role-based authorization using Next.js middleware and JW
 - Admin-only routes are protected under `/api/admin`
 
 **Benefit:** Centralized authorization ensures secure, consistent access control across all API routes.
+
+
+## Centralized Error Handling
+
+This project implements centralized error handling to ensure consistent, secure, and maintainable API responses.
+
+### Features
+- Structured logging using a custom logger
+- Centralized error handler for all API routes
+- Detailed error messages in development
+- Safe, user-friendly messages in production
+
+### Folder Structure
+- `lib/logger.ts` → Handles structured logs
+- `lib/errorHandler.ts` → Formats and manages errors
+- `app/api/*` → API routes using the error handler
+
+This approach improves debugging, security, and scalability.

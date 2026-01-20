@@ -1,11 +1,20 @@
 import { NextResponse } from "next/server";
+import { handleError } from "@/lib/errorHandler";
 
 const users = [
   { id: 1, name: "Alice" },
   { id: 2, name: "Bob" }
 ];
 
-export async function GET(req: Request) {
+
+
+export async function GET() {
+  try {
+    // Simulating an error
+    throw new Error("Database connection failed!");
+  } catch (error) {
+    return handleError(error, "GET /api/users");
+  }
   const { searchParams } = new URL(req.url);
   const page = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || 10;
