@@ -397,3 +397,20 @@ This project uses Redis to cache frequently accessed API data, reducing database
 - `app/api/users` → Cached API routes
 
 Caching significantly improves performance and scalability under high traffic.
+
+
+## Transactional Email Service
+
+This project implements transactional email functionality using SendGrid.
+
+### Features
+- Backend-triggered emails
+- Reusable HTML templates
+- Secure API key-based authentication
+- Support for welcome and notification emails
+
+### Folder Structure
+- `app/api/email` → Email sending API
+- `lib/emailTemplates.ts` → Reusable email templates
+
+Transactional emails improve user trust and engagement by notifying users of important events.
