@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET!;
+
 export async function POST(req: Request) {
   const { name, email, password } = await req.json();
 
@@ -40,3 +44,25 @@ export async function POST(req: Request) {
   
     return NextResponse.json({ success: true, message: "Login successful", token });
   }
+
+  const JWT_SECRET = process.env.JWT_SECRET!;
+
+// inside login handler
+const token = jwt.sign(
+  {
+    id: user.id,
+    email: user.email,
+    role: user.role, // ✅ required for authorization
+  },
+  JWT_SECRET,
+  { expiresIn: "1h" }
+);
+
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  return NextResponse.json({
+    success: true,
+    message: "User route accessible to authenticated users.",
+  });
+}

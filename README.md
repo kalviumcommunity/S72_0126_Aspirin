@@ -351,3 +351,14 @@ API routes validate request bodies before processing
 Invalid inputs return structured, readable error messages
 
 Schemas are reusable on both client and server
+
+## 🔐 Role-Based Authorization
+
+This project implements role-based authorization using Next.js middleware and JWT.
+
+- Users have roles (`user`, `admin`) stored in the database
+- JWT tokens include user role information
+- Middleware validates tokens and restricts access by role
+- Admin-only routes are protected under `/api/admin`
+
+**Benefit:** Centralized authorization ensures secure, consistent access control across all API routes.
