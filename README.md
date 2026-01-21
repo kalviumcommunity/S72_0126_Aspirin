@@ -268,7 +268,7 @@ All services run in a shared bridge network (`localnet`) allowing container-to-c
 
 ### How to Run
 
-```bash
+bash
 docker-compose up --build
 
 
@@ -414,3 +414,21 @@ This project implements transactional email functionality using SendGrid.
 - `lib/emailTemplates.ts` → Reusable email templates
 
 Transactional emails improve user trust and engagement by notifying users of important events.
+
+
+## Routing & Route Protection (Next.js App Router)
+
+This project demonstrates file-based routing using the Next.js App Router.
+
+### Features
+- Public and protected routes
+- JWT-based route protection using middleware
+- Dynamic routes with URL parameters
+- Shared layout and navigation
+- Custom 404 page
+
+### Key Concepts
+- `page.tsx` defines routes
+- `layout.tsx` wraps shared UI
+- `middleware.ts` protects routes before render
+- `[id]` enables dynamic routing
