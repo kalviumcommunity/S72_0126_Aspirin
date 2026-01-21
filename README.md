@@ -432,3 +432,19 @@ This project demonstrates file-based routing using the Next.js App Router.
 - `layout.tsx` wraps shared UI
 - `middleware.ts` protects routes before render
 - `[id]` enables dynamic routing
+
+
+## Layout & Component Architecture
+
+This project demonstrates a reusable component-based UI architecture in Next.js.
+
+### Highlights
+- Shared Header and Sidebar components
+- Global layout wrapper using `layout.tsx`
+- Reusable UI components (Button)
+- Clean folder structure with barrel exports
+
+### Benefits
+- Consistent UI across pages
+- Easy maintenance and scalability
+- Improved developer experience
