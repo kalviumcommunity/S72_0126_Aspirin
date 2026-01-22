@@ -468,3 +468,23 @@ This project demonstrates a reusable component architecture using Next.js.
 ```bash
 npm install
 npm run dev
+
+
+## Client-side Data Fetching with SWR
+
+This project demonstrates client-side data fetching in Next.js using SWR.
+
+### Features
+- Cached data fetching with automatic revalidation
+- Optimistic UI updates using SWR mutate
+- Centralized fetcher utility for API calls
+
+### Benefits
+- Faster UI with cached responses
+- Reduced network requests
+- Improved user experience
+
+### Run Project
+```bash
+npm install
+npm run dev
