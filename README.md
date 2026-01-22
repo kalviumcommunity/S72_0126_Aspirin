@@ -448,3 +448,23 @@ This project demonstrates a reusable component-based UI architecture in Next.js.
 - Consistent UI across pages
 - Easy maintenance and scalability
 - Improved developer experience
+
+
+## Layout & Component Architecture
+
+This project demonstrates a reusable component architecture using Next.js.
+
+### Key Concepts
+- Shared layout using Header, Sidebar, and LayoutWrapper
+- Reusable UI components with props-based configuration
+- Barrel exports for clean and scalable imports
+
+### Benefits
+- Consistent UI across pages
+- Easy maintenance and scalability
+- Clear separation of layout and UI components
+
+### Run Project
+```bash
+npm install
+npm run dev
