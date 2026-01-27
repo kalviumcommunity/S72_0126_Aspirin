@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Railway-inspired color palette */
+    --background: 210 20% 98%;
+    --foreground: 220 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 12%;
+
+    /* Deep railway blue */
+    --primary: 220 70% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Warm gray secondary */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 25% 20%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    /* Railway orange accent */
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Status colors */
+    --status-ontime: 142 71% 45%;
+    --status-ontime-bg: 142 76% 95%;
+    --status-slight-delay: 45 93% 47%;
+    --status-slight-delay-bg: 45 100% 94%;
+    --status-heavy-delay: 0 72% 51%;
+    --status-heavy-delay-bg: 0 93% 96%;
+
+    /* Crowd indicators */
+    --crowd-low: 142 71% 45%;
+    --crowd-medium: 45 93% 47%;
+    --crowd-high: 0 72% 51%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 220 70% 35%;
+
+    --radius: 0.75rem;
+
+    /* Custom shadows */
+    --shadow-card: 0 2px 8px -2px hsl(220 25% 12% / 0.08), 0 4px 16px -4px hsl(220 25% 12% / 0.06);
+    --shadow-card-hover: 0 4px 12px -2px hsl(220 25% 12% / 0.12), 0 8px 24px -4px hsl(220 25% 12% / 0.08);
+    --shadow-button: 0 2px 4px -1px hsl(220 70% 35% / 0.2);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 210 20% 98%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 220 70% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 24 95% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --status-ontime: 142 71% 50%;
+    --status-ontime-bg: 142 50% 15%;
+    --status-slight-delay: 45 93% 55%;
+    --status-slight-delay-bg: 45 50% 15%;
+    --status-heavy-delay: 0 72% 55%;
+    --status-heavy-delay-bg: 0 50% 15%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 220 70% 55%;
+
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 220 20% 20%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .card-elevated {
+    @apply bg-card rounded-xl;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-ontime {
+    @apply status-badge;
+    background-color: hsl(var(--status-ontime-bg));
+    color: hsl(var(--status-ontime));
+  }
+
+  .status-slight-delay {
+    @apply status-badge;
+    background-color: hsl(var(--status-slight-delay-bg));
+    color: hsl(var(--status-slight-delay));
+  }
+
+  .status-heavy-delay {
+    @apply status-badge;
+    background-color: hsl(var(--status-heavy-delay-bg));
+    color: hsl(var(--status-heavy-delay));
+  }
+
+  .crowd-indicator {
+    @apply inline-flex items-center gap-1 text-xs font-medium;
+  }
+
+  .crowd-low {
+    color: hsl(var(--crowd-low));
+  }
+
+  .crowd-medium {
+    color: hsl(var(--crowd-medium));
+  }
+
+  .crowd-high {
+    color: hsl(var(--crowd-high));
+  }
+
+  .nav-link {
+    @apply flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors;
+    @apply text-muted-foreground hover:text-foreground hover:bg-secondary;
+  }
+
+  .nav-link-active {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .section-header {
+    @apply text-lg font-semibold text-foreground mb-4;
+  }
+
+  .input-label {
+    @apply text-sm font-medium text-foreground mb-1.5 block;
+  }
+
+  .helper-text {
+    @apply text-xs text-muted-foreground mt-1;
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply backdrop-blur-md bg-card/80;
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(220 70% 45%) 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(24 95% 45%) 100%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
