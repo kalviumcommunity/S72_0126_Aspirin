@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Train, MessageSquare, Menu, X } from 'lucide-react';
+import { Home, Train, MessageSquare, Menu, X, LogIn, LogOut } from 'lucide-react';
 import { useState } from 'react';
+import { authService } from '@/services/authService';
 
 const navItems = [
   { path: '/', label: 'Home', icon: Home },
@@ -11,6 +12,13 @@ const navItems = [
 export const Navigation = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const isAuthenticated = authService.isAuthenticated();
+  const user = authService.getUser();
+
+  const handleLogout = () => {
+    authService.logout();
+    window.location.href = '/';
+  };
 
   return (
     <>
@@ -31,6 +39,28 @@ export const Navigation = () => {
             </Link>
           );
         })}
+        {isAuthenticated && user && (
+          <>
+            <span className="text-sm text-gray-600 mx-2">|</span>
+            <span className="text-sm font-medium mx-2">Hi, {user.name}!</span>
+            <button
+              onClick={handleLogout}
+              className="nav-link ml-2 text-red-600 hover:bg-red-50"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          </>
+        )}
+        {!isAuthenticated && (
+          <Link
+            to="/auth"
+            className={`nav-link ml-2 ${location.pathname === '/auth' ? 'nav-link-active' : ''}`}
+          >
+            <LogIn className="w-4 h-4" />
+            <span>Login</span>
+          </Link>
+        )}
       </nav>
 
       {/* Mobile Navigation */}
@@ -60,6 +90,35 @@ export const Navigation = () => {
                 </Link>
               );
             })}
+            {isAuthenticated && user && (
+              <>
+                <div className="my-2 border-t"></div>
+                <p className="text-sm font-medium p-2">Hi, {user.name}!</p>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="nav-link w-full text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </>
+            )}
+            {!isAuthenticated && (
+              <>
+                <div className="my-2 border-t"></div>
+                <Link
+                  to="/auth"
+                  onClick={() => setIsOpen(false)}
+                  className={`nav-link ${location.pathname === '/auth' ? 'nav-link-active' : ''}`}
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>

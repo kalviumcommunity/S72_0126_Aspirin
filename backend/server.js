@@ -1,15 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const connectDB = require('./src/config/db');
 
 const trainRoutes = require('./src/routes/trains');
 const stationRoutes = require('./src/routes/stations');
 const reportRoutes = require('./src/routes/reports');
 const suggestionRoutes = require('./src/routes/suggestions');
 const routeRoutes = require('./src/routes/routes');
+const authRoutes = require('./src/routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -21,6 +26,7 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/trains', trainRoutes);
 app.use('/api/stations', stationRoutes);
 app.use('/api/reports', reportRoutes);
