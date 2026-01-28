@@ -204,6 +204,7 @@ To ensure **data correctness and API safety**, this project uses **Zod** for sch
 * Express.js
 * **TypeScript**
 * RESTful APIs
+* Password hashing
 
 ### Database
 
