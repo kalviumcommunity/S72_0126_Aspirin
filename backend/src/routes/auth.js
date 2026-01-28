@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { signupSchema, loginSchema } = require('../schemas/validationSchemas');
 require('dotenv').config();
 
 const router = express.Router();
@@ -21,18 +22,24 @@ router.post('/signup', async (req, res) => {
   try {
     const { name, email, password, confirmPassword, phone } = req.body;
 
-    // Validation
-    if (!name || !email || !password || !confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide all required fields',
-      });
-    }
+    // Validate input using Zod
+    const validationResult = signupSchema.safeParse({
+      name,
+      email,
+      password,
+      confirmPassword,
+      phone,
+    });
 
-    if (password !== confirmPassword) {
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map(err => ({
+        field: err.path[0],
+        message: err.message,
+      }));
       return res.status(400).json({
         success: false,
-        message: 'Passwords do not match',
+        message: 'Validation failed',
+        errors,
       });
     }
 
@@ -63,6 +70,88 @@ router.post('/signup', async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
+        email: user.email,
+        phone: user.phone,
+      },
+    });
+  } catch (error) {
+    console.error('Signup error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Error creating user',
+    });
+  }
+});
+
+// @route   POST /api/auth/login
+// @desc    Login user
+// @access  Public
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate input using Zod
+    const validationResult = loginSchema.safeParse({
+      email,
+      password,
+    });
+
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map(err => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors,
+      });
+    }
+
+    // Check for user (get password field explicitly)
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials',
+      });
+    }
+
+    // Check password
+    const isPasswordMatch = await user.matchPassword(password);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials',
+      });
+    }
+
+    // Generate token
+    const token = generateToken(user._id);
+
+    // Return user data
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Error logging in',
+    });
+  }
+});
+
+module.exports = router;
         email: user.email,
         phone: user.phone,
       },

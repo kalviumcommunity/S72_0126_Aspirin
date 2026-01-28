@@ -5,11 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Layout } from "@/components/Layout";
+import { signupSchema, loginSchema } from "@/schemas/validationSchemas";
+import { ZodError } from "zod";
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
@@ -27,12 +30,52 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
+    // Clear field error when user starts typing
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    setFieldErrors({});
+    try {
+      if (isSignup) {
+        signupSchema.parse(formData);
+      } else {
+        loginSchema.parse({
+          email: formData.email,
+          password: formData.password,
+        });
+      }
+      return true;
+    } catch (err) {
+      if (err instanceof ZodError) {
+        const errors: Record<string, string> = {};
+        err.errors.forEach((error) => {
+          const path = error.path[0] as string;
+          errors[path] = error.message;
+        });
+        setFieldErrors(errors);
+        setError("Please fix the validation errors");
+      }
+      return false;
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
+
+    // Validate form before submitting
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -121,7 +164,11 @@ const Login = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required={isSignup}
+                    className={fieldErrors.name ? "border-red-500" : ""}
                   />
+                  {fieldErrors.name && (
+                    <p className="text-red-600 text-sm mt-1">{fieldErrors.name}</p>
+                  )}
                 </div>
               )}
 
@@ -134,7 +181,11 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  className={fieldErrors.email ? "border-red-500" : ""}
                 />
+                {fieldErrors.email && (
+                  <p className="text-red-600 text-sm mt-1">{fieldErrors.email}</p>
+                )}
               </div>
 
               <div>
@@ -164,7 +215,11 @@ const Login = () => {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required={isSignup}
+                      className={fieldErrors.confirmPassword ? "border-red-500" : ""}
                     />
+                    {fieldErrors.confirmPassword && (
+                      <p className="text-red-600 text-sm mt-1">{fieldErrors.confirmPassword}</p>
+                    )}
                   </div>
 
                   <div>

@@ -81,6 +81,8 @@ Users can submit:
 
 No login is required; reports are anonymous.
 
+> All incoming data is validated using **Zod schemas** before being accepted by the backend API.
+
 #### 🔹 View Reports
 
 Other users can see:
@@ -134,8 +136,11 @@ root
 │   ├── models           # MongoDB schemas
 │   ├── routes           # API routes
 │   ├── controllers      # Request handling logic
+│   ├── validators       # Zod schemas for request validation
 │   └── data             # Hardcoded train data
 │
+├── Dockerfile
+├── .dockerignore
 └── README.md
 ```
 
@@ -160,12 +165,35 @@ We use **MongoDB** as the primary database.
 
 ---
 
+## 🛡️ Input Validation with Zod
+
+To ensure **data correctness and API safety**, this project uses **Zod** for schema-based validation.
+
+### Where Zod is Used
+
+* Validating API request bodies (e.g., delay reports, route queries)
+* Validating query parameters
+* Validating frontend forms before submission
+
+### Benefits
+
+* Prevents invalid or malicious data from reaching business logic
+* Provides clear, typed error messages
+* Keeps validation logic centralized and maintainable
+* Works seamlessly with TypeScript
+
+### Example (Conceptual)
+
+> Every API route validates input using a Zod schema before executing controller logic. If validation fails, the API returns a proper 400 error with a message.
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
 
 * React.js
-* Next.js
+* Next.js / Vite
 * **TypeScript** (type safety and scalability)
 * **Tailwind CSS** (utility-first styling)
 * HTML5, CSS3
@@ -177,24 +205,56 @@ We use **MongoDB** as the primary database.
 * **TypeScript**
 * RESTful APIs
 
-### Database & ORM
+### Database
 
 * MongoDB
-* **Prisma ORM** (database modeling and type-safe queries)
 
 ### Validation & Utilities
 
 * **Zod** (schema validation for APIs and forms)
 
-### Other Tools & Libraries
+### DevOps / Tooling
 
+* **Docker** (containerized deployment)
 * Git & GitHub (version control)
 * npm (package management)
-* Charting library for visual insights
 
 ---
 
-## 🚀 How to Run the Project
+## 🐳 Docker Support
+
+This project is fully **Dockerized** using a multi-stage build:
+
+* Stage 1 builds the frontend
+* Stage 2 runs the backend and serves the frontend
+
+### Build Docker Image
+
+```bash
+docker build -t train-buddy .
+```
+
+### Run Docker Container
+
+```bash
+docker run -p 5000:5000 train-buddy
+```
+
+Then open:
+
+```
+http://localhost:5000
+```
+
+### Why Docker?
+
+* Ensures consistent environment across all machines
+* No need to install Node, MongoDB, or dependencies manually
+* Makes deployment and demo easy
+
+---
+
+## 🚀 How to Run the Project (Without Docker)
 
 ```bash
 npm install
@@ -217,13 +277,13 @@ The application runs locally and uses predefined data for demonstration.
 
 * Authentication for frequent commuters
 * Weighting reports based on number of users
-* Integration with real-time APIs (future scope)
+* Integration with real-time APIs
 * Push notifications for heavy delays
 
 ---
 
 ## 🏁 Conclusion
 
-This project demonstrates how **simple rules, good UI design, and community input** can solve a real-world problem. Instead of building a complex tracking system, we focus on **helping users decide what to do**, which is the core pain point for daily local train commuters.
+This project demonstrates how **simple rules, good UI design, strong validation, and community input** can solve a real-world problem. Instead of building a complex tracking system, we focus on **helping users decide what to do**, which is the core pain point for daily local train commuters.
 
 > *A smart, commuter-first decision support system for local trains.*
